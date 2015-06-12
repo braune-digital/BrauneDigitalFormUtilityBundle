@@ -1,0 +1,30 @@
+{
+    "name" : "braune-digital/form-utility-bundle",
+    "description" : "FormUtility bundle",
+    "type" : "symfony-bundle",
+    "authors" : [{
+        "name" : "Braune Digital GmbH",
+        "email" : "mail@braune-digital.com"
+    }],
+    "keywords" : [
+        "utility bundle"
+    ],
+    "license" : [
+        "MIT"
+    ],
+    "require" : {
+    },
+    "autoload" : {
+        "psr-4" : {
+            "BrauneDigital\\FormUtilityBundle\\" : ""
+        }
+    },
+    "repositories" : [{
+    	
+    }],
+    "extra" : {
+    "branch-alias" : {
+            "dev-master" : "master-dev"
+        }
+    }
+}
