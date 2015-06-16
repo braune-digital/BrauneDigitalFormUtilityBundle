@@ -1,0 +1,160 @@
+
+{% macro imageupload_widget_upload(multiple, media, form) %}
+	{% if form.vars.disabled == false %}
+		<button type="button" class="button button-small button-blue fileinput-button" data-js-select="upload-button">
+			<span class="glyphicon glyphicon-plus"></span>
+			<span>
+				{% if media is not null %}
+					{% trans from "form" %}form.actions.image.replace{% endtrans %}
+				{% else %}
+					{% trans from "form" %}form.actions.image.upload{% endtrans %}
+				{% endif %}
+			</span>
+			<div data-js-select="progress" class="progress hide">
+				<div class="progress-bar progress-bar-success"></div>
+			</div>
+		</button>
+		<div class="hiddenfile">
+			<input data-js-select="imageupload" class="imageupload-input" type="file" name="file" {% if multiple %}multiple="true"{% endif %}>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+
+{% block imageupload_widget %}
+
+	{% import _self as macros %}
+
+	{% spaceless %}
+		<div id="{{ name }}-imageupload" class="imageupload {% if form.vars.disabled == true %}disabled{% endif %}">
+			{% if multiple %}
+				<div class="row" data-js-select="image-container">
+					{% if gallery is not null %}
+						{% if mode == 'crop' %}
+							{% set runtimeConfig = {"braunedigital_imagine_crop": {"size": [thumbnailMaxWidth, thumbnailMaxHeight] }} %}
+						{% else %}
+							{% set runtimeConfig = {"braunedigital_imagine_resize": {"max": [thumbnailMaxWidth, thumbnailMaxHeight] }} %}
+						{% endif %}
+						{% for galleryHasMedia in gallery.galleryHasMedias %}
+							<div class="col-xs-6" data-js-select="image-view" data-id="{{ galleryHasMedia.media.id }}">
+								<div class="thumbnail">
+									<div class="image" data-js-select="image">
+										{% set image = '/uploads/media/' ~ galleryHasMedia.media.context  ~ '/0001/01/' ~ galleryHasMedia.media.providerReference %}
+										<img src="{{ image | imagine_filter(mode, runtimeConfig) }}" alt="{{ galleryHasMedia.media.name }}" />
+									</div>
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{{ macros.imageupload_widget_upload(multiple, null, form) }}
+				<div data-js-select="flash-message-container"></div>
+				<input type="hidden" {{ block('widget_attributes') }} data-js-select="imagehidden"value="{% if gallery is not null %}{{ gallery.id }}{% endif %}" />
+				<script type="text/template" class="imageupload-thumbnail-template">
+					<div class="col-xs-6" data-js-select="image-view">
+						<div class="thumbnail">
+							<div class="image" data-js-select="image">
+								<img src="<%= media.thumbnail %>" alt="<%= media.name %>" />
+								{{ block('imageupload_widget_remove_button_template') }}
+							</div>
+						</div>
+					</div>
+				</script>
+			{% else %}
+				<div data-js-select="image-container">
+					{% if media is not null %}
+						<div class="thumbnail" data-js-select="image-view" data-id="{% if media is not null %}{{ media.id }}{% endif %}">
+							<div class="image" data-js-select="image">
+								{% if media is not null %}
+									{% if mode == 'crop' %}
+										{% set runtimeConfig = {"braunedigital_imagine_crop": {"size": [thumbnailMaxWidth, thumbnailMaxHeight] }} %}
+									{% else %}
+										{% set runtimeConfig = {"braunedigital_imagine_resize": {"max": [thumbnailMaxWidth, thumbnailMaxHeight] }} %}
+									{% endif %}
+
+									{% set image = '/uploads/media/' ~ media.context  ~ '/0001/01/' ~ media.providerReference %}
+									<img src="{{ image | imagine_filter(mode, runtimeConfig) }}" alt="{{ media.name }}" />
+								{% endif %}
+							</div>
+						</div>
+					{% endif %}
+				</div>
+				{% if media is not null %}
+					{{ macros.imageupload_widget_upload(multiple, media, form) }}
+				{% else %}
+					{{ macros.imageupload_widget_upload(multiple, null, form) }}
+				{% endif %}
+				<div data-js-select="flash-message-container"></div>
+				<input type="hidden" {{ block('widget_attributes') }} data-js-select="imagehidden" value="{% if media is not null %}{{ media.id }}{% endif %}" />
+				<script type="text/template" class="imageupload-thumbnail-template">
+					<div data-js-select="image-view">
+						<div class="thumbnail">
+							<div class="image" data-js-select="image">
+								<% if (media.thumbnail) { %>
+									<img src="<%= media.thumbnail %>" alt="<%= media.name %>" />
+								<% } else { %>
+									<img src="{{ asset('bundles/applicationapp/img/layout/placeholder_transparent.png') }}" alt="" />
+								<% } %>
+								{% if form.vars.disabled == false %}
+									{{ block('imageupload_widget_remove_button_template') }}
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</script>
+			{% endif %}
+			<script type="text/template" class="imageupload-remove-button-template">
+				{% if form.vars.disabled == false %}
+					{{ block('imageupload_widget_remove_button_template') }}
+				{% endif %}
+			</script>
+			<script type="text/template" class="flash-message-template">
+				<div class="messages-container">
+					<% _.each(messages, function(message, key) { %>
+						<div class="alert alert-<%= type %>">
+							<div class="alert-icon"></div>
+							<div class="alert-message">
+								<%= message %>
+							</div>
+						</div>
+					<% }); %>
+				</div>
+			</script>
+		</div>
+	{% endspaceless %}
+	<script type="text/javascript">
+		var app = app || {};
+		require([
+			'jquery',
+			'EscapeGamer/Components/ImageUploader'
+		], function($, ImageUploader) {
+			$(function () {
+				new ImageUploader({
+					name: '{{ name }}',
+					selector: '#{{ name }}-imageupload',
+					removeButtonTemplate: '.imageupload-remove-button-template',
+					thumbnailTemplate: '.imageupload-thumbnail-template',
+					uploadUrl: '{{ path('likez_base_media_upload') }}',
+					deleteUrl: '{{ path('likez_base_media_delete') }}',
+					uploadNewLabel: '{% trans from "form" %}form.actions.image.upload{% endtrans %}',
+					uploadReplaceLabel: '{% trans from "form" %}form.actions.image.replace{% endtrans %}',
+					thumbnailMode: '{{ mode }}',
+					thumbnailMaxWidth: {{ thumbnailMaxWidth }},
+					thumbnailMaxHeight: {{ thumbnailMaxHeight }},
+					setOperator: {{ setOperator }},
+					limit: {{ limit }},
+					{% if multiple and gallery is not null %}gallery: {{ gallery.id }},{% endif %}
+					multiple: {% if multiple %}true{% else %}false{% endif %}
+
+				});
+			});
+		});
+	</script>
+{% endblock %}
+
+
+{% block imageupload_widget_remove_button_template %}
+	<button type="button" class="button button-white button-icon" data-js-select="remove-button">
+		<span class="glyphicon glyphicon-remove"></span>
+	</button>
+{% endblock %}

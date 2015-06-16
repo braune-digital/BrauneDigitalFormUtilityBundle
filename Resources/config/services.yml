@@ -1,0 +1,10 @@
+services:
+    braunedigital.formutility.imageupload:
+        class: BrauneDigital\FormUtilityBundle\Services\ImageUpload
+        arguments: ["@doctrine.orm.entity_manager", "@request_stack", "@service_container", "@security.context"]
+
+    braunedigital.formutility.form.type.imageupload:
+        class: BrauneDigital\FormUtilityBundle\Form\Type\ImageUploadType
+        arguments: ["@sonata.media.pool", "", "@doctrine.orm.entity_manager", "@service_container"]
+        tags:
+            - { name: form.type, alias: imageupload }
