@@ -206,7 +206,7 @@ define('BrauneDigital/FormUtilityBundle/Components/ImageUploader', [
 				limit: self.options.limit,
 				multiple: (self.options.multiple) ? 1 : 0,
 				gallery: self.options.gallery ? self.options.gallery : 0,
-				setOperator: self.options.setOperator ? self.options.setOperator : 0
+				setProvider: self.options.setProvider ? self.options.setProvider : 0
 			}
 
 			if (self.collection.length < self.options.limit) {

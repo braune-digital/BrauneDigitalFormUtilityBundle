@@ -53,7 +53,7 @@ class ImageUploadType extends AbstractType
 			'thumbnailMaxHeight' => 250,
 			'mode' => 'crop',
 			'limit' => 1,
-			'setOperator' => 1
+			'setProvider' => 1
 		));
 	}
 
@@ -88,7 +88,7 @@ class ImageUploadType extends AbstractType
 		$view->vars['thumbnailMaxWidth'] = $options['thumbnailMaxWidth'];
 		$view->vars['thumbnailMaxHeight'] = $options['thumbnailMaxHeight'];
 		$view->vars['multiple'] = $options['multiple'];
-		$view->vars['setOperator'] = $options['setOperator'];
+		$view->vars['setProvider'] = $options['setProvider'];
 		$view->vars['mode'] = $options['mode'];
 		$view->vars['limit'] = $options['limit'];
 	}

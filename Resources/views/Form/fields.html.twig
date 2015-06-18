@@ -39,8 +39,7 @@
 							<div class="col-xs-6" data-js-select="image-view" data-id="{{ galleryHasMedia.media.id }}">
 								<div class="thumbnail">
 									<div class="image" data-js-select="image">
-										{% set image = '/uploads/media/' ~ galleryHasMedia.media.context  ~ '/0001/01/' ~ galleryHasMedia.media.providerReference %}
-										<img src="{{ image | imagine_filter(mode, runtimeConfig) }}" alt="{{ galleryHasMedia.media.name }}" />
+										<img src="{{ original_file_path(galleryHasMedia.media) | imagine_filter(mode, runtimeConfig) }}" alt="{{ galleryHasMedia.media.name }}" />
 									</div>
 								</div>
 							</div>
@@ -72,8 +71,7 @@
 										{% set runtimeConfig = {"braunedigital_imagine_resize": {"max": [thumbnailMaxWidth, thumbnailMaxHeight] }} %}
 									{% endif %}
 
-									{% set image = '/uploads/media/' ~ media.context  ~ '/0001/01/' ~ media.providerReference %}
-									<img src="{{ image | imagine_filter(mode, runtimeConfig) }}" alt="{{ media.name }}" />
+									<img src="{{ original_file_path(media) | imagine_filter(mode, runtimeConfig) }}" alt="{{ media.name }}" />
 								{% endif %}
 							</div>
 						</div>
@@ -141,7 +139,7 @@
 					thumbnailMode: '{{ mode }}',
 					thumbnailMaxWidth: {{ thumbnailMaxWidth }},
 					thumbnailMaxHeight: {{ thumbnailMaxHeight }},
-					setOperator: {{ setOperator }},
+					setProvider: {{ setProvider }},
 					limit: {{ limit }},
 					{% if multiple and gallery is not null %}gallery: {{ gallery.id }},{% endif %}
 					multiple: {% if multiple %}true{% else %}false{% endif %}

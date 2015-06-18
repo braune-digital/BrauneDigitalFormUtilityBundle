@@ -36,7 +36,7 @@ class ImageUpload {
 		$galleryManager = $this->container->get('sonata.media.manager.gallery');
 
 		$gallery = $galleryManager->create();
-		if ((int) $this->request->get('setOperator') == 1) {
+		if ((int) $this->request->get('setProvider') == 1) {
 			$gallery->setName($this->securityContext->getToken()->getUser()->getProvider()->getTitle());
 		} else {
 			$gallery->setName($this->securityContext->getToken()->getUser()->getUsername());
