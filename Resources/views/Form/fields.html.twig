@@ -122,30 +122,34 @@
 	{% endspaceless %}
 	<script type="text/javascript">
 		var app = app || {};
-		require([
-			'jquery',
-			'BrauneDigital/FormUtilityBundle/Components/ImageUploader'
-		], function($, ImageUploader) {
-			$(function () {
-				new ImageUploader({
-					name: '{{ name }}',
-					selector: '#{{ name }}-imageupload',
-					removeButtonTemplate: '.imageupload-remove-button-template',
-					thumbnailTemplate: '.imageupload-thumbnail-template',
-					uploadUrl: '{{ path('likez_base_media_upload') }}',
-					deleteUrl: '{{ path('likez_base_media_delete') }}',
-					uploadNewLabel: '{% trans from "form" %}form.actions.image.upload{% endtrans %}',
-					uploadReplaceLabel: '{% trans from "form" %}form.actions.image.replace{% endtrans %}',
-					thumbnailMode: '{{ mode }}',
-					thumbnailMaxWidth: {{ thumbnailMaxWidth }},
-					thumbnailMaxHeight: {{ thumbnailMaxHeight }},
-					setProvider: {{ setProvider }},
-					limit: {{ limit }},
-					{% if multiple and gallery is not null %}gallery: {{ gallery.id }},{% endif %}
-					multiple: {% if multiple %}true{% else %}false{% endif %}
+		app.onReady = app.onReady || [];
+		app.onReady.push({
+			requires: [
+				'jquery',
+				'BrauneDigital/FormUtilityBundle/Components/ImageUploader'
+			],
+			callback: function($, ImageUploader) {
+				$(function () {
+					new ImageUploader({
+						name: '{{ name }}',
+						selector: '#{{ name }}-imageupload',
+						removeButtonTemplate: '.imageupload-remove-button-template',
+						thumbnailTemplate: '.imageupload-thumbnail-template',
+						uploadUrl: '{{ path('likez_base_media_upload') }}',
+						deleteUrl: '{{ path('likez_base_media_delete') }}',
+						uploadNewLabel: '{% trans from "form" %}form.actions.image.upload{% endtrans %}',
+						uploadReplaceLabel: '{% trans from "form" %}form.actions.image.replace{% endtrans %}',
+						thumbnailMode: '{{ mode }}',
+						thumbnailMaxWidth: {{ thumbnailMaxWidth }},
+						thumbnailMaxHeight: {{ thumbnailMaxHeight }},
+						setProvider: {{ setProvider }},
+						limit: {{ limit }},
+						{% if multiple and gallery is not null %}gallery: {{ gallery.id }},{% endif %}
+						multiple: {% if multiple %}true{% else %}false{% endif %}
 
+					});
 				});
-			});
+			}
 		});
 	</script>
 {% endblock %}
