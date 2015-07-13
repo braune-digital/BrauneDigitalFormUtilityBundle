@@ -1,13 +1,13 @@
 
 {% macro imageupload_widget_upload(multiple, media, form) %}
 	{% if form.vars.disabled == false %}
-		<button type="button" class="button button-small button-blue fileinput-button" data-js-select="upload-button">
+		<button type="button" class="btn btn-default fileinput-button" data-js-select="upload-button">
 			<span class="glyphicon glyphicon-plus"></span>
 			<span>
 				{% if media is not null %}
-					{% trans from "form" %}form.actions.image.replace{% endtrans %}
+					{% trans from "BrauneDigitalFormUtilityBundle" %}form.actions.image.replace{% endtrans %}
 				{% else %}
-					{% trans from "form" %}form.actions.image.upload{% endtrans %}
+					{% trans from "BrauneDigitalFormUtilityBundle" %}form.actions.image.upload{% endtrans %}
 				{% endif %}
 			</span>
 			<div data-js-select="progress" class="progress hide">
@@ -137,8 +137,8 @@
 						thumbnailTemplate: '.imageupload-thumbnail-template',
 						uploadUrl: '{{ path('likez_base_media_upload') }}',
 						deleteUrl: '{{ path('likez_base_media_delete') }}',
-						uploadNewLabel: '{% trans from "form" %}form.actions.image.upload{% endtrans %}',
-						uploadReplaceLabel: '{% trans from "form" %}form.actions.image.replace{% endtrans %}',
+						uploadNewLabel: '{% trans from "BrauneDigitalFormUtilityBundle" %}form.actions.image.upload{% endtrans %}',
+						uploadReplaceLabel: '{% trans from "BrauneDigitalFormUtilityBundle" %}form.actions.image.replace{% endtrans %}',
 						thumbnailMode: '{{ mode }}',
 						thumbnailMaxWidth: {{ thumbnailMaxWidth }},
 						thumbnailMaxHeight: {{ thumbnailMaxHeight }},

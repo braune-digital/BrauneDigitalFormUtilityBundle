@@ -1,0 +1,7 @@
+# Form
+form:
+  actions:
+    image:
+      upload: Bild hinzufügen
+      replace: Bild ersetzen
+      remove: Bild entfernen
